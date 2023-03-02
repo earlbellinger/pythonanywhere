@@ -6,11 +6,11 @@ import hmac
 import git
 
 app = Flask(__name__)
-w_secret = os.environ['WEBHOOK_SECRET']
+w_secret = str(os.environ.get('WEBHOOK_SECRET'))
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<p>henLO</p>"
 
 
 def is_valid_signature(x_hub_signature, data, private_key):
