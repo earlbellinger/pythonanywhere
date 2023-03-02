@@ -63,7 +63,7 @@ def webhook():
         if payload['ref'] != 'refs/heads/master':
             return json.dumps({'msg': 'Not master; ignoring'})
 
-        repo = git.Repo('https://github.com/earlbellinger/pythonanywhere.git')
+        repo = git.Repo('~/pythonanywhere')
         origin = repo.remotes.origin
 
         pull_info = origin.pull()
