@@ -15,7 +15,7 @@ def hello_world():
 #url_for('static', filename='style.css')
 @app.route("/pong")
 def pong():
-    return render_template('pong/pong.html')
+    return render_template('pong.html')
 
 @app.route("/henlo")
 def henlo():
