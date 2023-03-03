@@ -1,3 +1,2 @@
 #!/usr/bin/bash
 touch /var/www/earlbellinger_pythonanywhere_com_wsgi.py
-

@@ -12,6 +12,9 @@ w_secret = str(os.environ.get('WEBHOOK_SECRET'))
 def hello_world():
     return "<p>henLO world! new test</p>"
 
+@app.route("/henlo")
+def henlo():
+    return "<p>henLO</p>"
 
 def is_valid_signature(x_hub_signature, data, private_key):
     hash_algorithm, github_signature = x_hub_signature.split('=', 1)

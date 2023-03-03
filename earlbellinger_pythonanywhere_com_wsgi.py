@@ -2,8 +2,6 @@
 # web application at http://<your-username>.pythonanywhere.com/
 # It works by setting the variable 'application' to a WSGI handler of some
 # description.
-#
-# The below has been auto-generated for your Flask project
 
 import sys
 import os
