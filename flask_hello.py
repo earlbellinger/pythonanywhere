@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, render_template
 import os
 import json
 import hashlib
@@ -11,6 +11,11 @@ w_secret = str(os.environ.get('WEBHOOK_SECRET'))
 @app.route("/")
 def hello_world():
     return "<p>henLO world! new test</p>"
+
+#url_for('static', filename='style.css')
+@app.route("/pong")
+def pong():
+    return render_template('pong/pong.html')
 
 @app.route("/henlo")
 def henlo():
@@ -80,3 +85,6 @@ def webhook():
         build_commit = f'build_commit = "{commit_hash}"'
         print(f'{build_commit}')
         return 'Updated PythonAnywhere server to commit {commit}'.format(commit=commit_hash)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)
