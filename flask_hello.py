@@ -13,7 +13,7 @@ from openai.error import RateLimitError
 
 app = Flask(__name__)
 w_secret = str(os.environ.get('WEBHOOK_SECRET'))
-
+openai.api_key = str(os.getenv("OPENAI_API_KEY"))
 
 @app.route("/")
 def hello_world():
