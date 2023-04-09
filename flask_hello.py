@@ -21,6 +21,22 @@ def pong():
 def henlo():
     return "<p>henLO</p>"
 
+@app.route('/gpt4', methods=['GET', 'POST'])
+def gpt4():
+    user_input = request.args.get('user_input') if request.method == 'GET' else request.form['user_input']
+    messages = [{"role": "user", "content": user_input}]
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=messages
+        )
+        content = response.choices[0].message["content"]
+    except RateLimitError:
+        content = "The server is experiencing a high volume of requests. Please try again later."
+
+    return jsonify(content=content)
+
 def is_valid_signature(x_hub_signature, data, private_key):
     hash_algorithm, github_signature = x_hub_signature.split('=', 1)
     algorithm = hashlib.__dict__.get(hash_algorithm)
