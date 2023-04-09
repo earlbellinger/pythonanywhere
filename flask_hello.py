@@ -1,29 +1,41 @@
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, jsonify
+
 import os
 import json
 import hashlib
 import hmac
+
 import git
+
+import openai
+from openai.error import RateLimitError
+
 
 app = Flask(__name__)
 w_secret = str(os.environ.get('WEBHOOK_SECRET'))
 
+
 @app.route("/")
 def hello_world():
-    return "<p>henLO world! new test</p>"
+    return "<p>henLO world! gpt api</p>"
 
-#url_for('static', filename='style.css')
+# url_for('static', filename='style.css')
+
+
 @app.route("/pong")
 def pong():
     return render_template('pong.html')
+
 
 @app.route("/henlo")
 def henlo():
     return "<p>henLO</p>"
 
+
 @app.route('/gpt4', methods=['GET', 'POST'])
 def gpt4():
-    user_input = request.args.get('user_input') if request.method == 'GET' else request.form['user_input']
+    user_input = request.args.get(
+        'user_input') if request.method == 'GET' else request.form['user_input']
     messages = [{"role": "user", "content": user_input}]
 
     try:
@@ -37,12 +49,14 @@ def gpt4():
 
     return jsonify(content=content)
 
+
 def is_valid_signature(x_hub_signature, data, private_key):
     hash_algorithm, github_signature = x_hub_signature.split('=', 1)
     algorithm = hashlib.__dict__.get(hash_algorithm)
     encoded_key = bytes(private_key, 'latin-1')
     mac = hmac.new(encoded_key, msg=data, digestmod=algorithm)
     return hmac.compare_digest(mac.hexdigest(), github_signature)
+
 
 @app.route('/update_server', methods=['POST'])
 def webhook():
@@ -84,7 +98,7 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
-        #if payload['ref'] != 'refs/heads/master':
+        # if payload['ref'] != 'refs/heads/master':
         #    return json.dumps({'msg': 'Not master; ignoring'})
 
         repo = git.Repo('~/pythonanywhere')
@@ -101,6 +115,7 @@ def webhook():
         build_commit = f'build_commit = "{commit_hash}"'
         print(f'{build_commit}')
         return 'Updated PythonAnywhere server to commit {commit}'.format(commit=commit_hash)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
